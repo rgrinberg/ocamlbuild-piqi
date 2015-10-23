@@ -6,17 +6,23 @@ let piqic = "piqic-ocaml"
 let protobuf_include = "protobuf"
 
 let piqi () =
-  rule "piqi: .proto -> .piqi"
-    ~dep:"%.proto"
-    ~prod:"%.proto.piqi"
-    begin fun env _build ->
+  pdep [piqi] "import" (fun s -> [ protobuf_include / s^".proto.piqi"]) ;
+
+  let dep = "%.proto" in
+  let prod = "%.proto.piqi" in
+  rule "piqi: .proto -> .piqi" ~dep ~prod
+    begin fun env build ->
+      let file = env dep in
+      let out = env prod in
+      let tags = tags_of_pathname out ++ piqi in
       Cmd (S [ A piqi ; A "of-proto"
              ; A "-I"; P protobuf_include
-             ; P (env "%.proto") ]
+             ; A "-o"; P out
+             ; P file ; T tags ]
           )
     end;
   rule "piqi: .proto.piqi -> .ml"
-    ~deps:["%.proto.piqi"; "*.proto"]
+    ~deps:["%.proto.piqi"]
     ~prods:["%_piqi.ml"]
     begin fun env _build ->
       let piqi_file = env "%.proto.piqi" in
