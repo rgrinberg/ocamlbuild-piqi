@@ -3,7 +3,7 @@ open Ocamlbuild_plugin
 let piqi = "piqi"
 let piqic = "piqic-ocaml"
 
-let protobuf_include = "protobufs"
+let protobuf_include = "protobuf"
 
 let piqi () =
   rule "piqi: .proto -> .piqi"
