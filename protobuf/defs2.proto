@@ -1,0 +1,6 @@
+package two;
+
+message Two {
+    required int64 f1 = 1;
+    required int64 f2 = 1;
+}
