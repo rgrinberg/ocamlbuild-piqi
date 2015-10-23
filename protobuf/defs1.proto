@@ -3,6 +3,6 @@ import "defs2.proto";
 package one;
 
 message One {
-    required Two two = 1;
+    required two.Two two = 1;
     required int64 random = 2;
 }
